@@ -86,7 +86,16 @@ export default function CreateTripPage() {
     if (emailsToInvite.length === 0) return;
     if (!ownerEmail || !ownerEmail) return;
 
-    const response = await api.post("/trips", {
+    // const response = await api.post("/trips", {
+    //   destination: destination,
+    //   starts_at: eventStartAndEndDates?.from,
+    //   ends_at: eventStartAndEndDates?.to,
+    //   emails_to_invite: emailsToInvite,
+    //   owner_name: ownerName,
+    //   owner_email: ownerEmail,
+    // });
+
+    const response = await api.post("/api/v1/trips", {
       destination: destination,
       starts_at: eventStartAndEndDates?.from,
       ends_at: eventStartAndEndDates?.to,
@@ -95,9 +104,17 @@ export default function CreateTripPage() {
       owner_email: ownerEmail,
     });
 
-    const { tripId } = response.data;
+    //const { tripId } = response.data;
     //router.push(`/trips/${tripId}`);
-    router.push(`/trips/${tripId}`);
+
+    // console.log(
+    //   destination,
+    //   eventStartAndEndDates.to,
+    //   eventStartAndEndDates.from,
+    //   ownerName,
+    //   ownerEmail,
+    //   emailsToInvite
+    // );
   }
 
   return (
