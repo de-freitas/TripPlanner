@@ -3,9 +3,7 @@ import { z } from "zod";
 import { isAfter, isBefore, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-//import { getTrip } from './get-trip';
 import { createTrip } from "./create-trip";
-import { capitalizeMonthsFull } from "@/utils/formatMonthsToCapitalize";
 
 const createTripSchema = z.object({
   destination: z.string().min(3),
@@ -19,7 +17,6 @@ const createTripSchema = z.object({
 export async function POST(request: Request, response: NextResponse) {
   try {
     const body = createTripSchema.parse(await request.json());
-    console.log(body);
 
     if (
       isBefore(
@@ -34,10 +31,10 @@ export async function POST(request: Request, response: NextResponse) {
       throw new Error(`Invalid trip end date`);
     }
 
-    const response = await createTrip(body);
+    const { tripId } = await createTrip(body);
 
-    return NextResponse.json(body, {
-      status: 200,
+    return NextResponse.json(tripId, {
+      status: 201,
     });
   } catch (error) {
     return NextResponse.json({ error: `${error}` }, { status: 500 });

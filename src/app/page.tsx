@@ -95,7 +95,7 @@ export default function CreateTripPage() {
     //   owner_email: ownerEmail,
     // });
 
-    const response = await api.post("/api/v1/trips", {
+    const response = await api.post("/trips", {
       destination: destination,
       starts_at: eventStartAndEndDates?.from,
       ends_at: eventStartAndEndDates?.to,
@@ -104,8 +104,8 @@ export default function CreateTripPage() {
       owner_email: ownerEmail,
     });
 
-    //const { tripId } = response.data;
-    //router.push(`/trips/${tripId}`);
+    const { tripId } = response.data;
+    router.push(`/trips/${tripId}`);
 
     // console.log(
     //   destination,
