@@ -4,7 +4,6 @@ import { ptBR } from "date-fns/locale";
 import { nodemailer, getMailClient } from "@/lib/mail";
 
 import { capitalizeMonthsFull } from "@/utils/formatMonthsToCapitalize";
-import { env } from "process";
 
 interface createTripProps {
   destination: string;
@@ -51,8 +50,7 @@ export async function createTrip({
   const formattedStartDate = capitalizeMonthsFull(formattedStartDateToBR);
   const formattedEndDate = capitalizeMonthsFull(formattedEndDateToBR);
 
-  //const confirmationLink = `${env.API_BASE_URL}/trips/${trip.id}/confirm`;
-  const confirmationLink = `xaaaaama`;
+  const confirmationLink = `${process.env.API_BASE_URL}/trips/${trip.id}/confirm`;
 
   const mail = await getMailClient();
   const message = await mail.sendMail({

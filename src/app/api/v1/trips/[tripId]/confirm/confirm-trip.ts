@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { capitalizeMonthsFull } from "@/utils/formatMonthsToCapitalize";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { env } from "process";
 
 type confirmTripResult = {
   confirmed: boolean;
@@ -22,12 +21,12 @@ export async function confirmTrip(
     },
   });
 
-  if (!trip) throw new Error(`Trip not found!`);
+  if (!trip) return;
 
   if (trip.is_confirmed)
     return {
       confirmed: true,
-      redirectTo: `/trip-details/23bb69a4-1478-412b-a78d-25b78de05199`,
+      redirectTo: `${trip.id}`,
     };
 
   await prisma.trips.update({
@@ -84,8 +83,8 @@ export async function confirmTrip(
 
       return {
         confirmed: true,
-        redirectTo: `/trip-details/23bb69a4-1478-412b-a78d-25b78de05199`,
-      }; //`${env.FRONT_BASE_URL}/trips/${tripId}`}
+        redirectTo: `${trip.id}`,
+      };
     }),
   ]);
 }

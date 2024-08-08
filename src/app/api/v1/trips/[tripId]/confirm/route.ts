@@ -1,22 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { confirmTrip } from "./confirm-trip";
-import { env } from "process";
 
 const getTripSchema = z.string().uuid();
 
 export async function GET(request: NextRequest, response: NextResponse) {
   try {
     const pathname = request.nextUrl.pathname;
-    const tripId = getTripSchema.parse(
-      pathname.split("/api/v1/trips/")[1].split("/confirm")[0]
-    );
+    const tripId = pathname.split("/api/v1/trips/")[1].split("/confirm")[0];
+
+    getTripSchema.parse(tripId);
+
     const result = await confirmTrip(tripId);
 
     if (result?.confirmed) {
-      NextResponse.redirect(`http://localhost:3000/${result?.redirectTo}`);
+      return NextResponse.redirect(
+        `${process.env.APPLICATION_BASE_URL}/trip-details/${result?.redirectTo}`
+      );
+    } else {
+      return NextResponse.json(
+        { error: "Trip not confirmed" },
+        { status: 400 }
+      );
     }
   } catch (error) {
-    throw new Error();
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 }

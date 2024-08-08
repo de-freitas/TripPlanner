@@ -12,6 +12,10 @@ import { api } from "@/lib/axios";
 import logoTripPlanner from "../../public/Logo.svg";
 import Image from "next/image";
 
+interface responseTripId {
+  tripId: string;
+}
+
 export default function CreateTripPage() {
   const router = useRouter();
 
@@ -95,7 +99,7 @@ export default function CreateTripPage() {
     //   owner_email: ownerEmail,
     // });
 
-    const response = await api.post("/trips", {
+    const response = await api.post(`/trips`, {
       destination: destination,
       starts_at: eventStartAndEndDates?.from,
       ends_at: eventStartAndEndDates?.to,
@@ -104,8 +108,9 @@ export default function CreateTripPage() {
       owner_email: ownerEmail,
     });
 
-    const { tripId } = response.data;
-    router.push(`/trips/${tripId}`);
+    const { tripId }: responseTripId = response.data;
+
+    router.push(`/trip-details/${tripId}`);
 
     // console.log(
     //   destination,
@@ -119,7 +124,7 @@ export default function CreateTripPage() {
 
   return (
     <>
-      <div className="bg-pattern bg-no-repeat bg-center h-screen flex items-center justify-center">
+      <div className="bg-background bg-no-repeat bg-center h-screen flex items-center justify-center">
         <div className="max-w-3xl w-full px-6 text-center space-y-10">
           <div className="flex flex-col items-center gap-3">
             <Image src={logoTripPlanner} alt="Trip Planner logo" />

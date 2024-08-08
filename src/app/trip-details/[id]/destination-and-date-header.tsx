@@ -18,8 +18,9 @@ interface Trip {
 
 export default function DestinationAndDateHeader() {
   const pathname = usePathname();
-
+  console.log(pathname);
   const tripId = pathname.split("/trip-details/")[1];
+  console.log(tripId);
 
   const [trip, setTrip] = useState<Trip | undefined>();
 
@@ -32,7 +33,9 @@ export default function DestinationAndDateHeader() {
       ? capitalizeMonths(format(trip?.starts_at, "d LLL", { locale: ptBR }))
           .concat(" até ")
           .concat(
-            capitalizeMonths(format(trip.ends_at, "d LLL", { locale: ptBR }))
+            capitalizeMonths(
+              format(trip.ends_at, "d LLL 'de 'yyyy", { locale: ptBR })
+            )
           )
       : null;
 
@@ -42,7 +45,7 @@ export default function DestinationAndDateHeader() {
     trip.ends_at != null
   ) {
     displayedDate = capitalizeMonths(
-      format(trip?.starts_at, "d LLL", { locale: ptBR })
+      format(trip?.starts_at, "d LLL 'de ' yyyy", { locale: ptBR })
     );
   }
 
