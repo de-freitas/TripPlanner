@@ -4,18 +4,21 @@ import { confirmTrip } from "./confirm-trip";
 
 const getTripSchema = z.string().uuid();
 
-export async function GET(request: NextRequest, response: NextResponse) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { tripId: string } }
+) {
   try {
-    const pathname = request.nextUrl.pathname;
-    const tripId = pathname.split("/api/v1/trips/")[1].split("/confirm")[0];
-
+    const tripId = params.tripId;
+    console.log(params.tripId);
     getTripSchema.parse(tripId);
 
     const result = await confirmTrip(tripId);
+    console.log(result?.confirmed);
 
     if (result?.confirmed) {
       return NextResponse.redirect(
-        `${process.env.APPLICATION_BASE_URL}/trip-details/${result?.redirectTo}`
+        `${process.env.APPLICATION_BASE_URL}/trip-details/${tripId}`
       );
     } else {
       return NextResponse.json(

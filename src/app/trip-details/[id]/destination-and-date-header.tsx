@@ -1,6 +1,6 @@
 import { MapPin, Calendar, Settings2 } from "lucide-react";
 import Button from "@/components/button/button";
-import { usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 
 import { api } from "@/lib/axios";
 import { useEffect, useState } from "react";
@@ -17,10 +17,8 @@ interface Trip {
 }
 
 export default function DestinationAndDateHeader() {
-  const pathname = usePathname();
-  console.log(pathname);
-  const tripId = pathname.split("/trip-details/")[1];
-  console.log(tripId);
+  const params = useParams();
+  const tripId = params.id;
 
   const [trip, setTrip] = useState<Trip | undefined>();
 

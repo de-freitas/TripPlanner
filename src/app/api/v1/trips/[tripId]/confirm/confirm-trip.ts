@@ -6,7 +6,6 @@ import { ptBR } from "date-fns/locale";
 
 type confirmTripResult = {
   confirmed: boolean;
-  redirectTo: string;
 };
 
 export async function confirmTrip(
@@ -23,11 +22,11 @@ export async function confirmTrip(
 
   if (!trip) return;
 
-  if (trip.is_confirmed)
+  if (trip.is_confirmed) {
     return {
       confirmed: true,
-      redirectTo: `${trip.id}`,
     };
+  }
 
   await prisma.trips.update({
     where: { id: tripId },
@@ -80,11 +79,10 @@ export async function confirmTrip(
       });
 
       console.log(nodemailer.getTestMessageUrl(message));
-
-      return {
-        confirmed: true,
-        redirectTo: `${trip.id}`,
-      };
     }),
   ]);
+
+  return {
+    confirmed: true,
+  };
 }
