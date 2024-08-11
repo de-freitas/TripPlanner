@@ -20,6 +20,14 @@ export async function confirmTrip(
     },
   });
 
+  const tripOwner = await prisma.participants.findFirst({
+    select: { name: true },
+    where: {
+      trip_id: tripId,
+      is_owner: true,
+    },
+  });
+
   if (!trip) return;
 
   if (trip.is_confirmed) {
@@ -51,7 +59,7 @@ export async function confirmTrip(
 
   await Promise.all([
     trip.participants.map(async (participant) => {
-      const confirmationLink = ""; //`${env.API_BASE_URL}/participants/${participant.id}/confirm`;
+      const confirmationLink = `${process.env.API_BASE_URL}/trips/${tripId}/participants/${participant.id}/confirm`;
 
       const message = await mail.sendMail({
         from: {
@@ -62,7 +70,7 @@ export async function confirmTrip(
         subject: `Confirme sua viagem para ${trip.destination}`,
         html: `<div style="font-family: sans-serif; font-size: 16px; line-height: 1.6">
                     <p>
-                      Você foi convidado(a) para participar de uma viagem para <strong>${trip.destination}</strong>, nas datas de
+                      Você foi convidado(a) por <strong>${tripOwner?.name}</strong> para participar de uma viagem para <strong>${trip.destination}</strong>, nas datas de
                       <strong>${formattedStartDate}</strong> até <strong>${formattedEndDate}</strong>.
                     </p>
                     <p></p>
