@@ -102,15 +102,6 @@ export default function CreateTripPage() {
     const { tripId }: responseTripId = response.data;
 
     router.push(`/trip-details/${tripId}`);
-
-    // console.log(
-    //   destination,
-    //   eventStartAndEndDates.to,
-    //   eventStartAndEndDates.from,
-    //   ownerName,
-    //   ownerEmail,
-    //   emailsToInvite
-    // );
   }
 
   return (
